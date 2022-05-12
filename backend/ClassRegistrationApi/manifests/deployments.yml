@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registrations-api
+  namespace: courses
+spec:
+  selector:
+    matchLabels:
+      app: registrations-api
+  template:
+    metadata:
+      labels:
+        app: registrations-api
+    spec:
+      containers:
+      - name: registrations-api
+        image: jeffrygonzalez/intro-to-services-may-2022-registrations-api:v0.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+        env:
+          - name: scheduleApiUrl
+            value: http://schedule-api-service
+          - name: scheduleApiSchedulePath
+            value: /schedule/
+          - name: MongoDbConnection__ConnectionString
+            value: mongodb://root:TokyoJoe138!@mongodb.data.svc.cluster.local:27017/
+          - name: MongoDbConnection__Database
+            value: registration_db
+          - name: MongoDbConnection__Collection
+            value: registrations
+          - name: MongoDbConnection__LogCommands
+            value: "false"
+        

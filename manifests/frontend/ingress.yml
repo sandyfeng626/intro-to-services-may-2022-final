@@ -1,0 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: course-frontend-ingress
+  namespace: courses
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`app.rancher.localhost`) 
+      middlewares:
+        - name: stripprefix-regex
+      services:
+      - kind: Service
+        name: courses-frontend-service
+        port: 80

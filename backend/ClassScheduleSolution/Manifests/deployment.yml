@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: schedule-api
+  namespace: courses
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: schedule-api
+  template:
+    metadata:
+      labels:
+        app: schedule-api
+    spec:
+      volumes:
+        - name: schedule-volume
+          configMap: 
+            name: schedule-configmap
+            
+      containers:
+      - name: schedule-api
+        image: jeffrygonzalez/beginning-services-may-2022-classscheduleapi:v0.2
+        volumeMounts:
+          - mountPath: /app/Schedule
+            name: schedule-volume
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+
+
+

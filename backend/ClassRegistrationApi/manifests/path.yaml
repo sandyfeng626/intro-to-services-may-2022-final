@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: registrations-api-ingress-path
+  namespace: courses
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`api.rancher.localhost`) && PathPrefix(`/bff/v1`)
+      middlewares:
+        - name: stripprefix-regex
+        - name: cors-promiscuous
+      services:
+      - kind: Service
+        name: registrations-api-service
+        port: 80
